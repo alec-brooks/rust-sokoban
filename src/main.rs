@@ -28,6 +28,11 @@ impl event::EventHandler for Game {
             is.run_now(&self.world);
         }
 
+        // Run gameplay state system
+        {
+            let mut gss = GameplayStateSystem {};
+            gss.run_now(&self.world);
+        }
         Ok(())
     }
 
