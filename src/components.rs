@@ -13,7 +13,34 @@ pub struct Position {
 #[derive(Component)]
 #[storage(VecStorage)]
 pub struct Renderable {
-    pub path: String,
+    pub paths: Vec<String>,
+}
+
+impl Renderable {
+    pub fn new_static(path: String) -> Self {
+        Self { paths: vec![path] }
+    }
+
+    pub fn new_animated(paths: Vec<String>) -> Self {
+        Self { paths }
+    }
+    pub fn kind(&self) -> RenderableKind {
+        match self.paths.len() {
+            0 => panic!("invalid renderabled"),
+            1 => RenderableKind::Static,
+            _ => RenderableKind::Animated,
+        }
+    }
+
+    pub fn path(&self, path_index: usize) -> String {
+        // Mod the path index with size
+        self.paths[path_index % self.paths.len()].clone()
+    }
+}
+
+pub enum RenderableKind {
+    Static,
+    Animated,
 }
 
 #[derive(Component)]
